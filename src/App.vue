@@ -6,51 +6,22 @@
         &nbsp; Password Generator
       </h1>
       <h2>Length: {{ length }}</h2>
-      <input
-        class="slider"
-        type="range"
-        :min="min"
-        :max="max"
-        step="1"
-        v-model="length"
-      />
+      <Slider :length="length" @change="changeLength" />
       <h2>Characters:</h2>
-      <div class="input-group">
-        <label class="checkbox">
-          Lowercase (a-z)
-          <input type="checkbox" v-model="lowercase" />
-          <span class="checkbox__checkmark"></span>
-        </label>
-      </div>
-      <div class="input-group">
-        <label class="checkbox">
-          Uppercase (A-Z)
-          <input type="checkbox" v-model="uppercase" />
-          <span class="checkbox__checkmark"></span>
-        </label>
-      </div>
-      <div class="input-group">
-        <label class="checkbox">
-          Numbers (0-9)
-          <input type="checkbox" v-model="numbers" />
-          <span class="checkbox__checkmark"></span>
-        </label>
-      </div>
-      <div class="input-group">
-        <label class="checkbox">
-          Symbols (*!@%_#)
-          <input type="checkbox" v-model="symbols" />
-          <span class="checkbox__checkmark"></span>
-        </label>
-      </div>
+      <Checkbox
+        label="Lowercase (a-z)"
+        :checked="lowercase"
+        @change="lowercase = $event"
+      />
+      <Checkbox label="Uppercase (A-Z)" @change="uppercase = $event" />
+      <Checkbox label="Numbers (0-9)" @change="numbers = $event" />
+      <Checkbox label="Symbols (*!@%_#)" @change="symbols = $event" />
       <h2>Options</h2>
-      <div class="input-group">
-        <label class="checkbox">
-          Animation
-          <input type="checkbox" v-model="animation" />
-          <span class="checkbox__checkmark"></span>
-        </label>
-      </div>
+      <Checkbox
+        label="Animation"
+        :checked="true"
+        @change="animation = $event"
+      />
       <button class="button" @click="generatePassword">Generate</button>
       <div v-if="generatedPassword" class="card">
         <button class="copy-button" @click="copyToClipboard">
@@ -74,8 +45,15 @@
 </template>
 
 <script>
+import Slider from './components/Slider'
+import Checkbox from './components/Checkbox'
+
 export default {
   name: 'App',
+  components: {
+    Slider,
+    Checkbox,
+  },
   data() {
     return {
       min: 1,
@@ -92,6 +70,9 @@ export default {
     }
   },
   methods: {
+    changeLength(newLength) {
+      this.length = newLength
+    },
     generatePassword() {
       if (
         !this.lowercase &&
@@ -214,121 +195,6 @@ body {
   max-width: 550px;
   margin: 0 auto;
   padding: 0 20px 20px 20px;
-}
-
-/* Checkbox */
-
-.checkbox {
-  display: inline-block;
-  position: relative;
-  padding-left: 30px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  user-select: none;
-  font-size: 1.2em;
-}
-
-.checkbox .checkbox__checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 20px;
-  width: 20px;
-  background-color: #fff;
-  border-radius: 2px;
-  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
-  transition: all 0.5s ease;
-}
-
-.checkbox .checkbox__checkmark:after {
-  content: '';
-  position: absolute;
-  display: none;
-  left: 6px;
-  top: 2px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  transform: rotate(45deg);
-}
-
-.checkbox input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
-.checkbox:hover input ~ .checkbox__checkmark {
-  background-color: #f8fbfc;
-}
-
-.checkbox input:checked ~ .checkbox__checkmark {
-  background-color: #27b98c;
-}
-
-.checkbox input:checked ~ .checkbox__checkmark:hover {
-  background-color: #2cd39f;
-}
-
-.checkbox input:checked ~ .checkbox__checkmark:after {
-  display: block;
-}
-
-/* Slider */
-
-.slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 8px;
-  border-radius: 5px;
-  background: #d3d3d3;
-  outline: none;
-  opacity: 0.7;
-  -webkit-transition: 0.2s;
-  transition: opacity 0.2s;
-}
-
-.slider:hover {
-  opacity: 1;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #fff;
-  border-width: 3px;
-  border-color: #afafaf;
-  border-style: solid;
-  cursor: pointer;
-  transition: border-width 200ms ease-in-out, border-color 200ms ease-in-out;
-}
-
-.slider::-webkit-slider-thumb:hover {
-  border-width: 4px;
-  border-color: #27b98c;
-}
-
-.slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #fff;
-  border-width: 3px;
-  border-color: #afafaf;
-  border-style: solid;
-  cursor: pointer;
-  transition: border-width 200ms ease-in-out, border-color 200ms ease-in-out;
-}
-
-.slider::-moz-range-thumb:hover {
-  border-width: 4px;
-  border-color: #27b98c;
 }
 
 /* Button */
