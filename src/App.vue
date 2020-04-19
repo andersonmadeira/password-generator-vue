@@ -237,7 +237,7 @@ body {
   padding: 46px 32px 40px 32px;
   position: relative;
   margin-top: 20px;
-  overflow-wrap: break-word;
+  word-break: break-all;
   transition: box-shadow 0.4s ease-in-out 0s,
     background-color 0.4s ease-in-out 0s;
 }
